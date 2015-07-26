@@ -1,0 +1,51 @@
+<div class="row">
+
+    <div class="col-md-6 col-md-offset-3" style="">
+
+        <span class="text-left" style="margin-right: 15px;">
+            <img ng-src="{{app.icon_url}}" width="100" height="100" class="img-rounded" />
+        </span>
+
+        <span>{{offers[0].name}}</span>
+
+        <img class="pull-right" src="/images/platforms/ios.png" height="30" width="30"  ng-if="app.platform.name == 'iOS'" />
+        <img class="pull-right" src="/images/platforms/android.png" height="30" width="30"  ng-if="app.platform.name == 'Android'" />
+
+        <hr/>
+
+        <div class="panel panel-default" ng-repeat="offersOfPayoutGroup in offers | orderBy : 'payout' : true | groupBy : 'payout' : 'blabla'">
+            <div class="panel-body">
+                <div class="row">
+                    <!--payout-->
+                    <div class="col-md-2 text-center">
+                        <h3>
+                            <span class="label label-warning">{{offersOfPayoutGroup.payout | number : 2}}</span>
+                        </h3>
+                    </div>
+                    <div class="col-md-10">
+
+                        <div ng-repeat="offer in offersOfPayoutGroup.items | orderBy : 'name'">
+
+                            <div class="row">
+                                <!--network-->
+                                <div class="col-md-3 col-xs-4 text-center">
+                                    {{offer.network.name}}
+                                </div>
+                                <!--countries-->
+                                <div class="col-md-9 col-xs-8 text-center">
+                                    <span ng-repeat="country in offer.countries | orderBy : 'code'"><span class="label label-primary" >{{country.code}}</span> </span>
+                                </div>
+                            </div>
+
+                            <hr ng-if="!$last" />
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,125 @@
+<style>
+    .offer-tile {
+        border: 1px solid white;
+        cursor: pointer;
+    }
+
+    .offer-tile:hover {
+        border: 1px solid orange;
+    }
+
+    .offer-tile:active {
+        position: relative;
+        top: 1px;
+    }
+
+</style>
+
+
+<div class="row" style="background-color: #e7e7e7; padding: 20px 0;">
+
+    <div class="container-fluid">
+
+        <div class="row" style="margin-bottom: 30px;">
+
+            <div class="form form-inline">
+
+                <!--платформа-->
+                <div class="form-group col-md-2">
+                    <label class="control-label">OS: </label><br/>
+
+                    <div class="btn-group">
+                        <label class="btn btn-warning" ng-model="filters.platform_id" btn-radio="1">iOS</label>
+                        <label class="btn btn-warning" ng-model="filters.platform_id" btn-radio="2">Android</label>
+                    </div>
+                </div>
+
+                <!--сортировка-->
+                <div class="form-group col-md-3">
+                    <label class="control-label">Ordering:</label><br/>
+
+                    <div class="btn-group">
+                        <label class="btn btn-warning" ng-model="filters.ordering" btn-radio="'new'">New</label>
+                        <label class="btn btn-warning" ng-model="filters.ordering" btn-radio="'max_payout'">Max
+                            payout</label>
+                    </div>
+                </div>
+
+                <!--партнерка-->
+                <div class="form-group col-md-3">
+                    <label class="control-label">Network:</label><br/>
+                    <ui-select multiple ng-model="filters.networks" theme="bootstrap" ng-disabled="disabled"
+                               style="width: 100%;">
+                        <ui-select-match placeholder="">{{$item.name}}</ui-select-match>
+                        <ui-select-choices
+                                repeat="network.id as network in networks | propsFilter: {name: $select.search}">
+                            <span ng-bind-html="network.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <!--гео-->
+                <div class="form-group col-md-3">
+                    <label class="control-label">Country:</label><br/>
+                    <ui-select multiple ng-model="filters.countries" theme="bootstrap" ng-disabled="disabled"
+                               sortable="true" style="width: 100%;">
+                        <ui-select-match placeholder="">{{$item.code}}</ui-select-match>
+                        <ui-select-choices
+                                repeat="country.code as country in countries | propsFilter: {code: $select.search}">
+                            <span ng-bind-html="country.code | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <!--сбросить фильтры-->
+                <div class="col-md-1">
+                    <i class="glyphicon glyphicon-remove-circle pull-right" ng-click="reset_filters()"
+                       style="cursor: pointer;"></i>
+                </div>
+
+            </div>
+            <!--form-->
+        </div>
+        <!--row-->
+
+        <hr/>
+
+        <div class="row" infinite-scroll="loadNextPage()" infinite-scroll-distance="0">
+
+            <div class="col-md-3 col-sm-4" ng-repeat="offer in offers track by $index">
+                <div class="offer-tile"
+                     style="height: 150px; background-color: #fff; padding: 15px 15px; border-radius: 5px; margin-bottom: 30px;"
+                     ui-sref="app({id:offer.app.id})">
+                    <img
+                            width="80" height="80"
+                            ng-src="{{offer.app.icon_url}}"
+                            alt="" class="img-rounded" align="left" style="margin: 0 15px 0 0;"/>
+                    <span class="pull-right">
+                        <div class="text-right">
+                            <img src="/images/platforms/ios.png"
+                                 width="24" ng-if="offer.app.platform.name == 'iOS'"/>
+                            <img src="/images/platforms/android.png"
+                                 width="24" ng-if="offer.app.platform.name == 'Android'"/>
+                        </div>
+                        <div class="text-right" style="font-size: 19px; color: #bcbcb4; margin: 10px 0 0 10px;"><strong>{{offer.payout
+                            | number : 2 }}</strong></div>
+                    </span>
+
+                    <p style="font-size: 1.2em;">{{offer.name | limitTo : 40}}<br/>
+                        <small class="text-muted">{{offer.network.name}}</small>
+                    </p>
+                    <p>
+                        <span ng-if="offer.countries.length <= 7" ng-repeat="country in offer.countries">{{country.code}} </span>
+                        <span ng-if="offer.countries.length > 7">{{offer.countries.length}} countries </span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <!--row results-->
+
+
+    </div>
+    <!--container-fluid-->
+
+</div><!--row with background color-->

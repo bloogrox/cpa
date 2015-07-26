@@ -1,0 +1,85 @@
+<style>
+    .offer-tile {
+        border: 1px solid white;
+        cursor: pointer;
+    }
+
+    .offer-tile:hover {
+        border: 1px solid orange;
+    }
+
+    .offer-tile:active {
+        position: relative;
+        top: 1px;
+    }
+</style>
+
+
+<div class="row" style="background-color: #e7e7e7; padding: 20px 0;">
+
+    <div class="container-fluid">
+
+        <div class="row" style="margin-bottom: 30px;">
+
+            <div class="form form-inline">
+
+                <!--платформа-->
+                <div class="form-group col-md-2">
+                    <label class="control-label">OS: </label><br/>
+
+                    <div class="btn-group">
+                        <label class="btn btn-warning" ng-model="filters.platform_id" btn-radio="1">iOS</label>
+                        <label class="btn btn-warning" ng-model="filters.platform_id" btn-radio="2">Android</label>
+                    </div>
+                </div>
+
+
+                <!--сбросить фильтры-->
+                <div class="col-md-1 col-md-offset-9">
+                    <i class="glyphicon glyphicon-remove-circle pull-right" ng-click="reset_filters()"
+                       style="cursor: pointer;"></i>
+                </div>
+
+            </div>
+            <!--form-->
+        </div>
+        <!--row-->
+
+        <hr/>
+
+        <div class="row" infinite-scroll="loadNextPage()" infinite-scroll-distance="0">
+
+            <div class="col-md-3 col-sm-4" ng-repeat="app in apps track by $index">
+                <div class="offer-tile"
+                     style="height: 150px; background-color: #fff; padding: 15px 15px; border-radius: 5px; margin-bottom: 30px;"
+                     ui-sref="app({id:app.id})">
+                    <img
+                            width="80" height="80"
+                            ng-src="{{app.icon_url}}"
+                            alt="" class="img-rounded" align="left" style="margin: 0 15px 0 0;"/>
+                    <span class="pull-right">
+                        <div class="text-right">
+                            <img src="/images/platforms/ios.png"
+                                 width="24" ng-if="app.platform.name == 'iOS'"/>
+                            <img src="/images/platforms/android.png"
+                                 width="24" ng-if="app.platform.name == 'Android'"/>
+                        </div>
+                        <div class="text-right" style="font-size: 19px; color: #bcbcb4; margin: 10px 0 0 10px;">
+                            <strong>{{get_max_payout(app.offers) | number : 2}}</strong>
+                        </div>
+                    </span>
+
+                    <p style="font-size: 1.2em;">{{app.offers[0].name | limitTo : 40}}</p>
+                    <p>
+                        <span ng-repeat="country_code in get_countries(app.offers) | orderBy | limitTo : 10">{{country_code}} </span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <!--row results-->
+
+    </div>
+    <!--container-fluid-->
+
+</div><!--row with background color-->
