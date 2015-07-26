@@ -1,5 +1,12 @@
 # cpa
 
+## Screenshots
+
+![List](/app/images/screenshots/list.jpg?raw=true "")
+
+![Offer details](/app/images/screenshots/offer-details.jpg?raw=true "")
+
+
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.11.1.
 
